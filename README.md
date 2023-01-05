@@ -1,5 +1,5 @@
 ## MoePCB  
-MoePCB は "萌基板" を誰でも扱えるようにするためのライブラリです。
+MoePCB は  "[萌基板](https://fox-factory.booth.pm/item_lists/8aYTRoR8)" を誰でも扱えるようにするためのライブラリです。
 
 ## 対応機種  
 KNMK...からはじまる萌基板シリーズに対応しています。
@@ -27,5 +27,3 @@ USB-MIDIを使用する際は
 回路図など [こちら](https://github.com/MizuhasiYukkie/MOE-PCB)
 
 萌基板の詳細は [こちら](http://yuki-factory.main.jp/moe-pcb.html)
-
-頒布ページは [こちら](https://fox-factory.booth.pm/item_lists/8aYTRoR8)
