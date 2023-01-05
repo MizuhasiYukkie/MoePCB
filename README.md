@@ -23,6 +23,9 @@ KNMK...からはじまる萌基板シリーズに対応しています。
 USB-MIDIを使用する際は
 [MIDIUSB](https://github.com/arduino-libraries/MIDIUSB)
 
-回路図などの参考資料は [こちら](https://github.com/MizuhasiYukkie/MOE-PCB)
+## 参考資料  
+回路図など [こちら](https://github.com/MizuhasiYukkie/MOE-PCB)
 
 萌基板の詳細は [こちら](http://yuki-factory.main.jp/moe-pcb.html)
+
+頒布ページは [こちら](https://fox-factory.booth.pm/item_lists/8aYTRoR8)
