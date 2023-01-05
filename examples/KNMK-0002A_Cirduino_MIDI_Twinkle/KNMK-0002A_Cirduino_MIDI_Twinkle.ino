@@ -1,5 +1,5 @@
 /*!
- * KNMK-0001A Fraduino向けソースコード
+ * KNMK-0002A Cirduino向けソースコード
  *
  * Copyright (c) 2023 Mizuhasi Yukkie
  * This software is released under the MIT license.
@@ -23,27 +23,27 @@
 #include <MoePCB.h>
 #include <MIDIUSB.h>
 
-MoePCB Fran(7);  //インスタンス生成（RGBLED数）
+MoePCB Cirno(7);  //インスタンス生成（RGBLED数）
 
 //タイマーにより自動で実行
 void MoePCB_Task(){
   
   //光らせたいパターンを選んでLEDのIDをセットすると自動で処理
-  Fran.breath (LED1);          //LED1:裏面RGBLED
-  Fran.rainbow(LED4, 0,   C);  //LED4:レインボーモード,点灯パターンC（キラキラしない）
-  Fran.rainbow(LED3,60,   C);  //LED3:レインボーモード（位相差60度）
-  Fran.rainbow(LED2,60*2, C);
-  Fran.rainbow(LED5,60*3, C);
-  Fran.rainbow(LED6,60*4, C);
-  Fran.rainbow(LED7,60*5, C);
+  Cirno.breath (LED1);          //LED1:裏面RGBLED
+  Cirno.icy(LED4, C);  //LED4:ひんやり発光モード,点灯パターンC（キラキラしない）
+  Cirno.icy(LED3, C);
+  Cirno.icy(LED2, C);
+  Cirno.icy(LED5, C);
+  Cirno.icy(LED6, C);
+  Cirno.icy(LED7, C);
   
-  Fran.update();        //計算＆LEDに送信
+  Cirno.update();        //計算＆LEDに送信
 }
 
 void setup() {
 //  Serial.begin(9600);//シリアル通信を使いたいとき
 
-  Fran.begin();//萌基板初期化
+  Cirno.begin();//萌基板初期化
 
 }
 
@@ -70,22 +70,22 @@ void loop() {
         if(rx.byte3!=0){//ベロシティがゼロではない時（ノートオン＋ベロシティ０でノートオフとする機材もあるため）
           switch(random(0,6)){
             case 0:
-              Fran.rainbow(LED4, 0,   D);  //LED4:レインボーモード,点灯パターンD（強制キラッ）
+              Cirno.rainbow(LED4, 0,   D);  //LED4:レインボーモード,点灯パターンD（強制キラッ）
             break;
             case 1:
-              Fran.rainbow(LED3,60,   D);  //LED3:レインボーモード（位相差60度）
+              Cirno.rainbow(LED3,60,   D);  //LED3:レインボーモード（位相差60度）
             break;
             case 2:
-              Fran.rainbow(LED2,60*2, D);
+              Cirno.rainbow(LED2,60*2, D);
             break;
             case 3:
-              Fran.rainbow(LED5,60*3, D);
+              Cirno.rainbow(LED5,60*3, D);
             break;
             case 4:
-              Fran.rainbow(LED6,60*4, D);
+              Cirno.rainbow(LED6,60*4, D);
             break;
             case 5:
-              Fran.rainbow(LED7,60*5, D);
+              Cirno.rainbow(LED7,60*5, D);
             break;
           }
         }
