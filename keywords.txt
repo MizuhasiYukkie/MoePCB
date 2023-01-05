@@ -1,0 +1,38 @@
+#######################################
+# Syntax Coloring Map For Test
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+MoePCB		KEYWORD1
+MoePCB.h	KEYWORD1
+PCB		KEYWORD1
+Fran		KEYWORD1
+Cirno		KEYWORD1
+Hina		KEYWORD1
+Tenshi		KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+MoePCB_Task	KEYWORD2
+begin		KEYWORD2
+update		KEYWORD2
+breath		KEYWORD2
+gaming		KEYWORD2
+rainbow		KEYWORD2
+icy		KEYWORD2
+autumn		KEYWORD2
+cputemp_raw	KEYWORD2
+cputemp		KEYWORD2
+angry		KEYWORD2
+cold		KEYWORD2
+heat		KEYWORD2
+drunk		KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
