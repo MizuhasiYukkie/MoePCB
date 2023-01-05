@@ -13,7 +13,7 @@ KNMK...からはじまる萌基板シリーズに対応しています。
 
 
 ## 動作条件    
-このライブラリの動作には最低限以下のライブラリが必要です:
+このライブラリの動作には以下のライブラリが必要です:
 
 [Adafruit_NeoPixel](https://github.com/adafruit/Adafruit_NeoPixel)
 
@@ -22,5 +22,7 @@ KNMK...からはじまる萌基板シリーズに対応しています。
 
 USB-MIDIを使用する際は
 [MIDIUSB](https://github.com/arduino-libraries/MIDIUSB)
+
+回路図などの参考資料は [こちら](https://github.com/MizuhasiYukkie/MOE-PCB)
 
 萌基板の詳細は [こちら](http://yuki-factory.main.jp/moe-pcb.html)
