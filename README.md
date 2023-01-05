@@ -26,4 +26,4 @@ USB-MIDIを使用する際は
 ## 参考資料  
 回路図など [こちら](https://github.com/MizuhasiYukkie/MOE-PCB)
 
-萌基板の詳細は [こちら](http://yuki-factory.main.jp/moe-pcb.html)
+萌基板の紹介ページは [こちら](http://yuki-factory.main.jp/moe-pcb.html)
