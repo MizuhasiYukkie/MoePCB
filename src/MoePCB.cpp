@@ -13,6 +13,10 @@
     ISR (TIMER4_COMPA_vect) {
       MoePCB_Task();
     }
+    //タイマー１版 20-25ms割り込み　※未使用
+//    ISR (TIMER1_COMPA_vect) {
+//      MoePCB_Task();
+//    }
     //コンストラクタ
     MoePCB::MoePCB(uint8_t led_num){
       _led_num = led_num; //LED数をプライベートに保存
@@ -33,7 +37,6 @@
       //タイマーA：20-25msごとにコンペアAクリア＆割り込みを設定
       TCCR4B = 0;  TCCR4A = 0;  TCCR4C = 0;  TCCR4D = 0;  TCCR4E = 0;
       TCCR4B = 0b1100;// 1/2048
-      TCCR4A = (1<<COM4A1);
       OCR4C =156;//0-255  <-- 16,000,000 MHz / 2048 / 50Hz
       //OCR4C =195;//0-255  <-- 16,000,000 MHz / 2048 / 40Hz
       //タイマー４開始処理
@@ -41,6 +44,17 @@
       TCNT4 = 0;
       TIMSK4 = (1<<OCIE4A); 
       digitalWrite(LED0, HIGH);//OFF
+      /*
+      //タイマー1：20-25msごとにコンペアAクリア＆割り込みを設定
+      TCCR1B = 0;  TCCR1A = 0;  TCCR1C = 0;
+      TCCR1B = (1<<WGM12)|(1<<CS02)|(1<<CS00);//0b00000010;// 1/1024
+      OCR1A =312;//16bit  <-- 16,000,000 MHz / 1024 / 50Hz
+      //OCR1A =390;//16bit  <-- 16,000,000 MHz / 1024 / 40Hz
+      //タイマー1開始処理
+      TIFR1 = (1<<OCF1A);
+      TCNT1 = 0;
+      TIMSK1 = (1<<OCIE1A); 
+      */
     }
     //現在の温度のCPU読みADC値を返すｓ
     float MoePCB::cputemp_raw(void){
