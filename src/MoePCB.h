@@ -5,7 +5,7 @@
  * Released under the MIT license.
  * see https://opensource.org/licenses/MIT
 */
-
+#ifndef USE_NEW_MOE_PCB
     #ifndef MoePCB_h
     #define MoePCB_h
     #include "Arduino.h"
@@ -106,3 +106,6 @@
     };
 
     #endif
+#else
+#include "./NewMoePCB.h"
+#endif
