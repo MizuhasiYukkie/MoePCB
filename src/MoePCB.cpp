@@ -8,15 +8,6 @@
     #include "Arduino.h"
     #include "MoePCB.h"
 
-    //タイマー４ 20-25ms割り込み
-    extern void MoePCB_Task(void);
-    ISR (TIMER4_COMPA_vect) {
-      MoePCB_Task();
-    }
-    //タイマー１版 20-25ms割り込み　※未使用
-//    ISR (TIMER1_COMPA_vect) {
-//      MoePCB_Task();
-//    }
     //コンストラクタ
     MoePCB::MoePCB(uint8_t led_num){
       _led_num = led_num; //LED数をプライベートに保存

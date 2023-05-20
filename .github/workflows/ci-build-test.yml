@@ -1,0 +1,91 @@
+name: Build Test
+
+# トリガー指定
+on:
+  # 手動実行用
+  workflow_dispatch:
+  # PR自動実行用
+  pull_request:
+    # PR作成時、PRにpushしたとき、closeされたPRをreopenしたときに実行
+    types: [opened, synchronize, reopened]
+    # PRに以下のファイルの変更が含まれている場合に実行
+    paths:
+      - '**.h'
+      - '**.cpp'
+      - '**.ino'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # リポジトリの clone と checkout
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+      with:
+        path: checkout-dir
+        ref: ${{ github.head_ref || github.ref }}
+
+    # arduino-cli のインストールと examples のビルド
+    - name: Install arduino-cli and Build examples
+      run: |
+        # install arduino-cli
+        TOOL_DIR=${{ github.workspace }}/tool
+        mkdir -p "${TOOL_DIR}"
+        curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR="${TOOL_DIR}" sh
+        PATH=$PATH:${TOOL_DIR}/
+        echo "$PATH"
+
+        echo "::group::refresh platform indexes"
+        arduino-cli core update-index
+        echo "::endgroup::"
+
+        echo "::group::add arduino core and libraries"
+        arduino-cli core install arduino:avr
+        echo "::endgroup::"
+        arduino-cli core list # for debug
+
+        echo "::group::allow lib install by --git-url"
+        arduino-cli config init
+        arduino-cli config set library.enable_unsafe_install true
+        echo "::endgroup::"
+
+        echo "::group::add arduino libraries"
+        arduino-cli lib install --git-url https://github.com/adafruit/Adafruit_NeoPixel.git
+        arduino-cli lib install --git-url https://github.com/martin2250/ADCTouch.git
+        arduino-cli lib install --git-url https://github.com/arduino-libraries/MIDIUSB
+        echo "::endgroup::"
+
+        echo "::group::add MoePCB libraries"
+        USER_DIR=$(arduino-cli config dump | awk '/^directories:/{f=1} f{if($1=="user:"){f=0;print $0}}' | sed -E 's/^ *user: *//')
+        echo "USER_DIR=${USER_DIR}"
+        mv checkout-dir "${USER_DIR}/libraries/MoePCB"
+        echo "::endgroup::"
+        arduino-cli lib list --all # for debug
+
+        # enable problem matcher
+        echo "::add-matcher::${USER_DIR}/libraries/MoePCB/.github/workflows/gcc_matcher.json"
+
+        # build MoePCB sample projects
+        (cd "${USER_DIR}/libraries/MoePCB" && git ls-files examples/*.ino) | \
+        while IFS= read -r FILE_PATH || [[ -n "${FILE_PATH}" ]]; do
+          LOG_PATH=logs/${FILE_PATH%.ino}.log
+          echo "::group::build ${FILE_PATH}"
+          mkdir -p "$(dirname "${LOG_PATH}")"
+          (arduino-cli compile -b arduino:avr:leonardo "${USER_DIR}/libraries/MoePCB/${FILE_PATH}" --verbose --log-level trace 2>&1 || true) | tee "${LOG_PATH}"
+          echo "::endgroup::"
+        done
+
+        # disable problem matcher
+        echo "::remove-matcher owner=gcc-problem-matcher::"
+
+        echo "::group::list all files"
+        find "${USER_DIR}/libraries/MoePCB" -type f
+        echo "::endgroup::"
+
+    # ビルド時の出力をアーカイブとして保存
+    - name: Archive build results
+      uses: actions/upload-artifact@v3
+      with:
+        name: build_result_run-${{ github.run_id }}
+        path: logs
