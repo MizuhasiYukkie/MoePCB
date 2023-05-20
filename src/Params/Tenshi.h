@@ -25,9 +25,9 @@ public:
     {
     public:
       static constexpr led_index_t Heart       = 0; // LED1 : 胸 (背面)
-      static constexpr led_index_t OuterLeft   = 1; // LED2 : 最左
+      static constexpr led_index_t OuterLeft   = 3; // LED2 : 最左
       static constexpr led_index_t Left        = 2; // LED3 : 中左
-      static constexpr led_index_t Center      = 3; // LED4 : 中
+      static constexpr led_index_t Center      = 1; // LED4 : 中
       static constexpr led_index_t Right       = 4; // LED5 : 中右
       static constexpr led_index_t OuterRight  = 5; // LED6 : 最右
       static constexpr led_index_t SwordBottom = 6; // LED7 : 剣の最下
@@ -72,19 +72,19 @@ public:
     class Port
     {
     public:
-      static constexpr touch_sensor_port_t Hair  = A1; // タッチセンサ1 : 髪
-      static constexpr touch_sensor_port_t Chest = A0; // タッチセンサ2 : 胸
-      static constexpr touch_sensor_port_t Skirt = A2; // タッチセンサ3 : スカート
-      static constexpr touch_sensor_port_t Sword = A3; // タッチセンサ4 : 剣
+      static constexpr touch_sensor_port_t Hair  = A0; // タッチセンサ1 : 髪
+      static constexpr touch_sensor_port_t Chest = A1; // タッチセンサ2 : 胸
+      static constexpr touch_sensor_port_t Skirt = A3; // タッチセンサ3 : スカート
+      static constexpr touch_sensor_port_t Sword = A2; // タッチセンサ4 : 剣
 
     public:
       static constexpr touch_sensor_port_t Get(touch_sensor_index_t idx) {
-        return idx == 0 ? Hair : (idx == 1 ? Chest : (idx == 2 ? Skirt : 0));
+        return idx == 0 ? Hair : (idx == 1 ? Chest : (idx == 2 ? Skirt : (idx == 3 ? Sword : 0)));
       }
     };
 
   public:
-    static constexpr touch_sensor_index_t Length = 3;
+    static constexpr touch_sensor_index_t Length = 4;
   };
 };
 

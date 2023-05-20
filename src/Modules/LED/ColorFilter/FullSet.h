@@ -31,6 +31,7 @@ protected:
 protected:
   MoePCB_LEDColorFilter_FullSet()
     : last_color()
+    , reset(true)
     , enable(false)
     , angry(false)
     , cold(false)
@@ -44,19 +45,25 @@ protected:
   // 32-bit packed WRGB value で返す
   uint32_t filter(led_index_t led_idx, color_t color) {
     if (enable) {
+      if (reset) {
+        last_color[led_idx].H = color.H;
+        last_color[led_idx].S = color.S;
+        last_color[led_idx].V = color.V;
+      }
+
       if (color.forceH) {
         last_color[led_idx].H = color.H;
       } else {
         uint16_t hue = color.H;
 
-        // 怒りゲージによる色相上書き (0° ≒ 赤色)
-        hue = morph(0, hue, get_angry_counter());
+        // 怒りゲージによる色相上書き (約353° ≒ 仄かに紫がかった赤色)
+        hue = morph(64250, hue, get_angry_counter());
 
         // 寒さゲージによる色相上書き (約190° ≒ 水色)
         hue = morph(34600, hue, get_cold_counter());
 
-        // 暑さゲージによる色相上書き (約353° ≒ 仄かに紫がかった赤色)
-        hue = morph(64250, hue, get_heat_counter());
+        // 暑さゲージによる色相上書き (0° ≒ 赤色)
+        hue = morph(0, hue, get_heat_counter());
 
         // 酔いゲージによる色相上書き (約353° ≒ 仄かに紫がかった赤色)
         hue = morph(64250, hue, get_drunk_counter());
@@ -103,6 +110,8 @@ protected:
   // フレームごとの更新処理
   void update() {
     if (enable) {
+      reset = false;
+
       // 怒りゲージ更新
       if (angry) {
         if (get_angry_counter() < (256-6)) { get_angry_counter() += 6; }
@@ -194,6 +203,9 @@ private:
   }
 
 public:
+  // 直前の色をリセットする
+  void resetLastColor() { reset = true; }
+
   // 全部乗せLED調光フィルタの有効状態を設定する
   void setEnabled(bool v) { enable = v; }
   // 全部乗せLED調光フィルタの有効状態を取得する
@@ -236,6 +248,7 @@ private:
 
 private:
   color_raw_t last_color[length];
+  bool reset : 1;
   bool enable : 1;
   bool angry : 1;
   bool cold : 1;

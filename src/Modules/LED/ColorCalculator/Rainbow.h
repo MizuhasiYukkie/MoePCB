@@ -61,7 +61,7 @@ public:
   private:
     // 連続して同じLEDをピカピカしないよう、インターバルを設定
     typedef uint8_t twinkle_interval_t;
-    static constexpr twinkle_interval_t twinkle_cooltime = 120;
+    static constexpr twinkle_interval_t twinkle_cooltime = 32;
 
     //明るさレベルに応じた輝度
 #if __cpp_constexpr >= 201304

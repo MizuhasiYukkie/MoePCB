@@ -39,7 +39,7 @@ public:
   private:
     // 連続して同じLEDをピカピカしないよう、インターバルを設定
     typedef uint8_t twinkle_interval_t;
-    static constexpr twinkle_interval_t twinkle_cooltime = 120;
+    static constexpr twinkle_interval_t twinkle_cooltime = 32;
 
     //明るさレベルに応じた輝度
 #if __cpp_constexpr >= 201304
@@ -102,6 +102,7 @@ public:
         else {
           if(random(0, 250) == 0){ //ランダムで明るくする
             V = GetTwinkleBrightness(brightness_level); //キラッと光量
+            forceV = true;
           }
         }
 
@@ -112,7 +113,7 @@ public:
       // H 色相
       uint16_t H;
       {
-        // [-30, 30) の autumn_cnt を [0, 30] で折り返す値 hue に変換
+        // [-120, 120) の autumn_cnt を [120, 240] で折り返す値 hue に変換
         float hue;
         if (autumn_cnt < 0) {
           hue = -autumn_cnt;
@@ -122,11 +123,11 @@ public:
 
         // autumn_cnt 更新
         autumn_cnt += step;
-        if (autumn_cnt >= 30.0f) {
-          autumn_cnt -= 60.0f;
+        if (autumn_cnt >= 120.0f) {
+          autumn_cnt -= 240.0f;
         }
-        if (autumn_cnt < -30.0f) {
-          autumn_cnt += 60.0f;
+        if (autumn_cnt < -120.0f) {
+          autumn_cnt += 240.0f;
         }
 
         // 色相計算
@@ -181,7 +182,7 @@ public:
   {
   public:
     // 調光モードを Autumn に設定する
-    void set_mode_autumn(typename T_MoePCB_Params::LED::led_index_t led_idx, int phase_shift, float step = 0.5f, BrightnessLevel::type_t brightness_level = 1) {
+    void set_mode_autumn(typename T_MoePCB_Params::LED::led_index_t led_idx, int phase_shift, float step = 1.0f, BrightnessLevel::type_t brightness_level = 1) {
       void * const p = this->allocateInterface(led_idx);
       new(p) SpecificInterface(phase_shift, step, brightness_level);
     }
