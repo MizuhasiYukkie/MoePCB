@@ -1,0 +1,4 @@
+{
+    "board": "arduino:avr:leonardo",
+    "sketch": "KNMK-0006A_Mariduino.ino"
+}
